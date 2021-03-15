@@ -1,4 +1,4 @@
-setwd("C:/Users/mschl/OneDrive/Documents/Dokumente/Data Task")
+setwd("C:/Users/mschl/OneDrive/Documents/Dokumente/Data Task") # Set working directory to your files!
 options(warn=-1)
 
 ### Load Packages and Data
@@ -20,7 +20,7 @@ supplierDatNormal$TypeNameFull<-str_to_title(tolower(supplierDat$TypeNameFull))
 ### Integration
 n<-length(supplierDatNormal$ID)
 supplierDatTarget<-names(Target_Data) %>% rlang::rep_named(list(as.character())) %>% as_tibble() # Create empty target dataframe
-supplierDatTarget[1:n,"carType"] <- ifelse(supplierDatNormal$`Attribute Names`=="Seats"&supplierDatNormal$`Attribute Values`==2,"Coupé",NA) # Can be extended if wished
+supplierDatTarget[1:n,"carType"] <- ifelse(supplierDatNormal$`Attribute Names`=="Seats"&supplierDatNormal$`Attribute Values`==2,"CoupÃ©",NA) # Can be extended if wished
 supplierDatTarget[1:n,"type"] <- rep("car",n) # seems like only cars allowed in target schema, hence no need to test if supplier information is a car
 supplierDatTarget$model <- supplierDatNormal$ModelTypeText 
 supplierDatTarget$make <- supplierDatNormal$MakeText 
