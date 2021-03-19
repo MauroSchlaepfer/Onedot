@@ -35,13 +35,12 @@ TibbleDat
 supplier<-JSON_into_Tibble("supplier_car2.json")
 
 ##### Recode (Pre-processing) #####
-## Only one data point in supplier data, leave it unchanged
 UTF_Fix <- function(x) { # from http://www.i18nqa.com/debug/utf8-debug.html
-  x <- gsub("ü","�",x)
-  x <- gsub("�Y","�",x)                            
-  x <- gsub("ör","�",x)
-  x <- gsub("ä","�",x)
-  x <- gsub("é","�",x)
+  x <- gsub("Ã¼","ü",x)
+  x <- gsub("ÃY","ß",x)                            
+  x <- gsub("Ã¶r","ö",x)
+  x <- gsub("Ã¤","ä",x)
+  x <- gsub("Ã©","é",x)
   
   x
 } # Fix UTF 
@@ -85,7 +84,7 @@ supplierDatNormal$ModelText<-Normalization(supplierDatNormal$ModelText)
 
 
 ### Color
-supplierDatNormal$BodyColorText<-sub("(\\w+).*", "\\1", supplierDatNormal$BodyColorText) # take only first word (drop "m�t")
+supplierDatNormal$BodyColorText<-sub("(\\w+).*", "\\1", supplierDatNormal$BodyColorText) # take only first word (drop "mét")
 Farben<-names(table(supplierDatNormal$BodyColorText)) # write out colors
 
 # Get translation schema
@@ -103,13 +102,13 @@ supplierDatNormal$BodyColorText[Position]  <- Colors[match(supplierDatNormal$Bod
 ## condition / ConditionType
 supplierDatNormal$ConditionTypeText<-gsub("Neu","New",supplierDatNormal$ConditionTypeText)   
 supplierDatNormal$ConditionTypeText<-gsub("Occasion","Used",supplierDatNormal$ConditionTypeText)   
-supplierDatNormal$ConditionTypeText<-gsub("Vorf�hrmodell","Original Condition",supplierDatNormal$ConditionTypeText)   
+supplierDatNormal$ConditionTypeText<-gsub("Vorführmodell","Original Condition",supplierDatNormal$ConditionTypeText)   
 supplierDatNormal$ConditionTypeText<-gsub("Oldtimer ","Used with guarantee",supplierDatNormal$ConditionTypeText)   
 
 ## cartype / BodyType 
 supplierDatNormal$BodyTypeText[which(na.omit(supplierDatNormal$Seats=="1"))] <- "Single seater"
 supplierDatNormal$BodyTypeText<-gsub("Cabriolet","Convertible",supplierDatNormal$BodyTypeText) 
-supplierDatNormal$BodyTypeText<-gsub("SUV / Gel�ndewagen","SUV",supplierDatNormal$BodyTypeText)   
+supplierDatNormal$BodyTypeText<-gsub("SUV / Geländewagen","SUV",supplierDatNormal$BodyTypeText)   
 supplierDatNormal$BodyTypeText<-gsub("Kleinwagen","SUV",supplierDatNormal$BodyTypeText)   
 supplierDatNormal$BodyTypeText<-gsub("Limousine","Saloon",supplierDatNormal$BodyTypeText)   
 supplierDatNormal$BodyTypeText<-gsub("Kombi","Station Wagon",supplierDatNormal$BodyTypeText)   
