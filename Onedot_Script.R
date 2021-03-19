@@ -34,7 +34,6 @@ TibbleDat
 }
 supplier<-JSON_into_Tibble("supplier_car2.json")
 
-
 ##### Recode (Pre-processing) #####
 ## Only one data point in supplier data, leave it unchanged
 UTF_Fix <- function(x) { # from http://www.i18nqa.com/debug/utf8-debug.html
@@ -57,15 +56,17 @@ Var_With_ASCII_Error<-(sapply(supplier,function(x)sum(grepl("\"",x)))>0) # Mark 
 supplier[Var_With_ASCII_Error]<-sapply(supplier[Var_With_ASCII_Error],function(x)gsub("\"","",x)) # Fix these variables
 
 
-Names<-c(names(supplier),names(table(supplier$`Attribute Names`)[table(supplier$`Attribute Names`)==1103]))[-c(7,8,9)]
 
+## fixed messed up row entries
+MessedUpOnes<-which((supplier$entity_id==supplier$ID)) # find those with entity = id which have the attributes one to the left in modeltypetext
+supplier$`Attribute Values`[MessedUpOnes]  <- supplier$`Attribute Names`[MessedUpOnes]
+supplier$`Attribute Names`[MessedUpOnes]  <- supplier$ModelTypeText[MessedUpOnes]
+supplier$ModelTypeText[MessedUpOnes]  <- supplier$ModelText[MessedUpOnes]
+
+## to wide format
 supplierDat<-tidyr::pivot_wider(supplier[,1:8], names_from = "Attribute Names", values_from = "Attribute Values")
-supplierDat<-supplierDat[,Names] # keep relevent variables
 
-##
-
-
-### Normalization
+##### Normalization #####
 supplierDatNormal<-supplierDat
 Normalization <- function(x){
   x<-str_to_title(tolower(x))
